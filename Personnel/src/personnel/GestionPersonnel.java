@@ -129,7 +129,7 @@ public class GestionPersonnel implements Serializable
 	
 	public void addRoot(GestionPersonnel gestion , String nom, String password , int id) throws SauvegardeImpossible{
 		
-		 Employe employe = new Employe(this, nom, password, id);
+		 Employe employe = new Employe(this, null, nom, password, password, password, id);
 		 this.root = employe;
 	}
 	public void delete(Employe employe) throws SauvegardeImpossible{
