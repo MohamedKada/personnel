@@ -21,11 +21,10 @@ public class GestionPersonnel implements Serializable
 	private static final long serialVersionUID = -105283113987886425L;
 	private static GestionPersonnel gestionPersonnel = null;
 	private SortedSet<Ligue> ligues;
-	private Employe root = new Employe(this, null, "root", "", "", "toor");
+	private Employe root = new Employe(this, null, "root", "", "", "toor", 0);
 	public final static int SERIALIZATION = 1, JDBC = 2, 
 			TYPE_PASSERELLE = JDBC;  
 	private static Passerelle passerelle = TYPE_PASSERELLE == JDBC ? new jdbc.JDBC() : new serialisation.Serialization();	
-	
 	/**
 	 * Retourne l'unique instance de cette classe.
 	 * Crée cet objet s'il n'existe déjà.
@@ -104,6 +103,11 @@ public class GestionPersonnel implements Serializable
 	{
 		return passerelle.insert(ligue);
 	}
+	
+	int update(Ligue ligue) throws SauvegardeImpossible
+	{
+		return passerelle.update(ligue);
+	}
 
 	/**
 	 * Retourne le root (super-utilisateur).
@@ -113,5 +117,15 @@ public class GestionPersonnel implements Serializable
 	public Employe getRoot()
 	{
 		return root;
+	}
+	
+	public int insert(Employe employe) throws SauvegardeImpossible {
+		return passerelle.insert(employe);
+	}
+	
+	public void addRoot(GestionPersonnel gestion , String nom, String password , int id) throws SauvegardeImpossible{
+		
+		 Employe employe = new Employe(this, nom, password, id);
+		 this.root = employe;
 	}
 }

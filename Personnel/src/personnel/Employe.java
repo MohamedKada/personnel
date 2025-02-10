@@ -19,8 +19,10 @@ public class Employe implements Serializable, Comparable<Employe>
 	private GestionPersonnel gestionPersonnel;
 	private LocalDate dateArrive;
 	private LocalDate dateDepart;
+	private int id;
+	private boolean admin;
 	
-	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, LocalDate dateArrive, LocalDate dateDepart)
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, LocalDate dateArrive, LocalDate dateDepart, int id, boolean admin)
 	throws Erreurdate
 	{
 		this.gestionPersonnel = gestionPersonnel;
@@ -29,6 +31,8 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.password = password;
 		this.mail = mail;
 		this.ligue = ligue;
+		this.admin = admin;
+		this.id = id;
 
 		if (dateArrive == null || dateDepart.isBefore(dateArrive) ) {
             throw new Erreurdate();
@@ -38,7 +42,7 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.dateDepart = dateDepart;
 	}
 	
-	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password)
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, int id)
 			
 			{
 				this.gestionPersonnel = gestionPersonnel;
@@ -47,22 +51,35 @@ public class Employe implements Serializable, Comparable<Employe>
 				this.password = password;
 				this.mail = mail;
 				this.ligue = ligue;
-
-				
+				this.id = id;
 			}
 
 	/**
 	 * Retourne vrai ssi l'employé est administrateur de la ligue 
 	 * passée en paramètre.
+	 * @param id 
 	 * @return vrai ssi l'employé est administrateur de la ligue 
 	 * passée en paramètre.
 	 * @param ligue la ligue pour laquelle on souhaite vérifier si this 
 	 * est l'admininstrateur.
 	 */
 	
+	
+	public Employe(GestionPersonnel gestion , String nom , String password, int id) throws SauvegardeImpossible{
+    	this.gestionPersonnel = gestion;
+    	this.nom = nom;
+    	this.password = password;
+    	this.id = gestion.insert(this);
+    }
+	
 	public boolean estAdmin(Ligue ligue)
 	{
 		return ligue.getAdministrateur() == this;
+	}
+	
+	public boolean getAdmin()
+	{
+		return admin;
 	}
 	
 	/**
@@ -105,6 +122,10 @@ public class Employe implements Serializable, Comparable<Employe>
 		return this.prenom;
 	}
 	
+	public String getPass()
+	{
+		return this.password;
+	}
 	/**
 	 * Change le prénom de l'employé.
 	 * @param prenom le nouveau prénom de l'employé. 
@@ -222,6 +243,13 @@ public class Employe implements Serializable, Comparable<Employe>
 	/**
 	 * Supprime l'employé. Si celui-ci est un administrateur, le root
 	 * récupère les droits d'administration sur sa ligue.
+	 */
+	
+	public int getId() {
+		return this.id;
+	}
+	/**
+	 * 
 	 */
 	
 	public void remove()

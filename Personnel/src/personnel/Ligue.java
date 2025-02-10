@@ -113,7 +113,7 @@ public class Ligue implements Serializable, Comparable<Ligue>
 	throws Erreurdate
 	{
 	
-		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password , dateArv , Datedeb);
+		Employe employe = new Employe(this.gestionPersonnel, this, nom, prenom, mail, password , dateArv , Datedeb, id, false);
 		employes.add(employe);
 		return employe;
 	}
