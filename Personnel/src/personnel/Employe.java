@@ -1,6 +1,7 @@
 package personnel;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * Employé d'une ligue hébergée par la M2L. Certains peuvent 
@@ -16,8 +17,11 @@ public class Employe implements Serializable, Comparable<Employe>
 	private String nom, prenom, password, mail;
 	private Ligue ligue;
 	private GestionPersonnel gestionPersonnel;
+	private LocalDate dateArrive;
+	private LocalDate dateDepart;
 	
-	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password)
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password, LocalDate dateArrive, LocalDate dateDepart)
+	throws Erreurdate
 	{
 		this.gestionPersonnel = gestionPersonnel;
 		this.nom = nom;
@@ -25,8 +29,28 @@ public class Employe implements Serializable, Comparable<Employe>
 		this.password = password;
 		this.mail = mail;
 		this.ligue = ligue;
+
+		if (dateArrive == null || dateDepart.isBefore(dateArrive) ) {
+            throw new Erreurdate();
+        }
+		
+		this.dateArrive = dateArrive;
+		this.dateDepart = dateDepart;
 	}
 	
+	Employe(GestionPersonnel gestionPersonnel, Ligue ligue, String nom, String prenom, String mail, String password)
+			
+			{
+				this.gestionPersonnel = gestionPersonnel;
+				this.nom = nom;
+				this.prenom = prenom;
+				this.password = password;
+				this.mail = mail;
+				this.ligue = ligue;
+
+				
+			}
+
 	/**
 	 * Retourne vrai ssi l'employé est administrateur de la ligue 
 	 * passée en paramètre.
@@ -78,7 +102,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	public String getPrenom()
 	{
-		return prenom;
+		return this.prenom;
 	}
 	
 	/**
@@ -98,7 +122,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	public String getMail()
 	{
-		return mail;
+		return this.mail;
 	}
 	
 	/**
@@ -110,6 +134,57 @@ public class Employe implements Serializable, Comparable<Employe>
 	{
 		this.mail = mail;
 	}
+	/**
+	 * Retourne la date d'arrivée de l'employé.
+	 * @return la date d'arrivée de l'employé.
+	 */
+	
+	public LocalDate getDateArrivee()
+	{
+		return this.dateArrive;
+	}
+	
+	/**
+	 * Retourne la date d'arrivée de l'employé.
+	 * @return la date d'arrivée de l'employé.
+	 */
+	
+	 public void setDateArrivee(LocalDate dateArrive)
+	 throws Erreurdate
+	 {
+		 if (dateArrive == null  || dateDepart.isBefore(dateArrive)) {
+	            throw new Erreurdate();
+	        }
+		 else {
+		 
+		this.dateArrive = dateArrive;}
+	 }
+
+	 /**
+	 * Modifie la date de départ de l'employé.
+	 * @return la date de départ de l'employé.
+	 */
+	
+	public LocalDate getDateDepart()
+	{
+		return this.dateDepart;
+	}
+	
+	/**
+	 * Modifie la date de départ de l'employé.
+	 * @return la date de départ de l'employé.
+	 */
+	
+	 public void setDateDepart(LocalDate dateDepart)
+	 throws Erreurdate
+	 {
+		 if (dateDepart.isBefore(dateArrive)) {
+	            throw new Erreurdate();
+	        }
+		 else {
+		this.dateDepart = dateDepart;}
+	 }
+	
 
 	/**
 	 * Retourne vrai ssi le password passé en paramètre est bien celui
@@ -141,7 +216,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	
 	public Ligue getLigue()
 	{
-		return ligue;
+		return this.ligue;
 	}
 
 	/**

@@ -28,6 +28,7 @@ public class EmployeConsole
 			menu.add(changerMail(employe));
 			menu.add(changerPassword(employe));
 			menu.addBack("q");
+		
 			return menu;
 	}
 

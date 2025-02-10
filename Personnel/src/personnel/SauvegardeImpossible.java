@@ -22,3 +22,4 @@ public class SauvegardeImpossible extends Exception
 			exception.printStackTrace();			
 	}
 }
+
