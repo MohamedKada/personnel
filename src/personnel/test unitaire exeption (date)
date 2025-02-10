@@ -1,0 +1,50 @@
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
+
+class EmployeExceptionTest {
+    private GestionPersonnel gestionPersonnel;
+    private Ligue ligue;
+
+    @BeforeEach
+    void setUp() {
+        gestionPersonnel = new GestionPersonnel();
+        ligue = new Ligue("Ligue Test");
+    }
+
+    @Test
+    void testDateInvalideExceptionPourDateSortieAvantDateEntree() {
+        LocalDate dateEntree = LocalDate.of(2023, 1, 1);
+        LocalDate dateSortie = LocalDate.of(2022, 12, 31);
+        assertThrows(DateInvalideException.class, () -> new Employe(gestionPersonnel, ligue, "NomTest", "PrenomTest", "test@example.com", "password123", dateEntree, dateSortie),
+                "Devrait lancer une exception si la date de sortie est avant la date d'entrée");
+    }
+
+    @Test
+    void testDateInvalideExceptionPourDateEntreeNull() {
+        assertThrows(DateInvalideException.class, () -> new Employe(gestionPersonnel, ligue, "NomTest", "PrenomTest", "test@example.com", "password123", null, LocalDate.now()),
+                "Devrait lancer une exception si la date d'entrée est null");
+    }
+
+    @Test
+    void testImpossibleDeSupprimerRootException() throws DateInvalideException {
+        Employe root = gestionPersonnel.getRoot();
+        assertThrows(ImpossibleDeSupprimerRoot.class, root::remove,
+                "Devrait lancer une exception si on essaie de supprimer le root");
+    }
+
+    @Test
+    void testEmailInvalideLorsDeLaModification() throws DateInvalideException {
+        Employe employe = new Employe(gestionPersonnel, ligue, "NomTest", "PrenomTest", "test@example.com", "password123", LocalDate.now(), null);
+        assertThrows(IllegalArgumentException.class, () -> employe.setMail("emailInvalide"),
+                "Devrait lancer une exception pour un email invalide");
+    }
+
+    @Test
+    void testMotDePasseInvalideLorsDeLaModification() throws DateInvalideException {
+        Employe employe = new Employe(gestionPersonnel, ligue, "NomTest", "PrenomTest", "test@example.com", "password123", LocalDate.now(), null);
+        assertThrows(IllegalArgumentException.class, () -> employe.setPassword("123"),
+                "Devrait lancer une exception si le mot de passe est trop court");
+    }
+}
