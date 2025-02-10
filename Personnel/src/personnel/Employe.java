@@ -107,9 +107,11 @@ public class Employe implements Serializable, Comparable<Employe>
 	 * @param nom le nouveau nom.
 	 */
 	
-	public void setNom(String nom)
+	public void setNom(String nom) throws
 	{
 		this.nom = nom;
+		gestionPersonnel.update(this);
+
 	}
 
 	/**
@@ -120,6 +122,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	public String getPrenom()
 	{
 		return this.prenom;
+		gestionPersonnel.update(this);
 	}
 	
 	public String getPass()
@@ -178,7 +181,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	        }
 		 else {
 		 
-		this.dateArrive = dateArrive;}
+		this.dateArrive = dateArrive;} gestionPersonnel.update(this);
 	 }
 
 	 /**
@@ -203,7 +206,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	            throw new Erreurdate();
 	        }
 		 else {
-		this.dateDepart = dateDepart;}
+		this.dateDepart = dateDepart;}gestionPersonnel.update(this);
 	 }
 	
 
@@ -228,6 +231,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	public void setPassword(String password)
 	{
 		this.password= password;
+		gestionPersonnel.update(this);
 	}
 
 	/**
