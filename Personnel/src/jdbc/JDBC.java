@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import personnel.*;
 
@@ -51,6 +52,30 @@ public class JDBC implements Passerelle
 			ResultSet ligues = instruction.executeQuery(requete);
 			while (ligues.next())
 				gestionPersonnel.addLigue(ligues.getInt(1), ligues.getString(2));
+				// Employés
+				String requeteEmploye = "SELECT * FROM employe WHERE ID_LIGUE = ?";
+	            PreparedStatement instructionEmploye = connection.prepareStatement(requeteEmploye);
+	            instructionEmploye.setInt(1, ligues.getInt(1));
+	            ResultSet employes = instructionEmploye.executeQuery();
+	            while (employes.next()) {
+	                int idLigue = employes.getInt("ID_LIGUE");
+	                // boucle
+	                for (Ligue ligue : gestionPersonnel.getLigues()) {
+	                    if (ligue.getId() == idLigue) {
+	                        ligue.addEmploye(
+	                            employes.getInt("ID_EMP"),
+	                            employes.getString("NOM_EMP"),
+	                            employes.getString("PRENOM_EMP"),
+	                            employes.getString("MAIL_EMP"),
+	                            employes.getString("MDP_EMP"),
+	                            LocalDate.parse(employes.getString("DATE_ARRIVE")),
+	                            LocalDate.parse(employes.getString("DATE_DEPART")),
+	                            employes.getBoolean("ADMIN")
+	                        );
+	                        break; 
+	                    }
+	                }
+	            }
 		}
 		catch (SQLException e)
 		{

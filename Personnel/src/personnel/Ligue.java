@@ -152,4 +152,10 @@ public class Ligue implements Serializable, Comparable<Ligue>
 		// TODO Stub de la méthode généré automatiquement
 		return id;
 	}
+
+	public void addEmploye(int int1, String string, String string2, String string3, String string4, LocalDate localDate,
+			LocalDate localDate2, boolean boolean1) {
+		// TODO Stub de la méthode généré automatiquement
+		
+	}
 }
