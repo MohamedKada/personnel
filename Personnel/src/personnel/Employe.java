@@ -65,7 +65,7 @@ public class Employe implements Serializable, Comparable<Employe>
 	 */
 	
 	
-	public Employe(GestionPersonnel gestion , String nom , String password, int id) throws SauvegardeImpossible{
+	public Employe(GestionPersonnel gestion , String nom , String password) throws SauvegardeImpossible{
     	this.gestionPersonnel = gestion;
     	this.nom = nom;
     	this.password = password;
