@@ -31,11 +31,21 @@ public class JDBC implements Passerelle
 	}
 	
 	@Override
-	public GestionPersonnel getGestionPersonnel() 
+	public GestionPersonnel getGestionPersonnel() throws SauvegardeImpossible
 	{
 		GestionPersonnel gestionPersonnel = new GestionPersonnel();
 		try 
 		{
+			PreparedStatement instruction;
+			instruction = connection.prepareStatement("select id_employe , nomEmploye , passwd from employe where id_ligue is null");
+			ResultSet resultat = instruction.executeQuery();
+			
+			
+			
+			if(resultat != null && resultat.next()) {
+			gestionPersonnel.addRoot(gestionPersonnel, resultat.getString(2), resultat.getString(3), resultat.getInt(1));
+			}
+
 			String requete = "select * from ligue";
 			Statement instruction = connection.createStatement();
 			ResultSet ligues = instruction.executeQuery(requete);
