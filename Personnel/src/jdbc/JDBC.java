@@ -87,4 +87,50 @@ public class JDBC implements Passerelle
 			throw new SauvegardeImpossible(exception);
 		}		
 	}
+	
+	public int update(Ligue ligue) throws SauvegardeImpossible 
+	{
+		try 
+		{
+			PreparedStatement instruction;
+			instruction = connection.prepareStatement("update into ligue (nom) values(?)", Statement.RETURN_GENERATED_KEYS);
+			instruction.setString(1, ligue.getNom());		
+			instruction.executeUpdate();
+			ResultSet id = instruction.getGeneratedKeys();
+			id.next();
+			return id.getInt(1);
+		} 
+		catch (SQLException exception) 
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}		
+	}
+
+	@Override
+	public int insert(Employe employe) throws SauvegardeImpossible 
+	{
+		try 
+		{
+			PreparedStatement instruction;
+			instruction = connection.prepareStatement("insert into employe (NOM_EMP, PRENOM_EMP, MDP_EMP, DATE_ARRIVE, DATE_DEPART, ADMIN, MAIL_EMP, ID_EMP) values(?)", Statement.RETURN_GENERATED_KEYS);
+			instruction.setString(1, employe.getNom());	
+			instruction.setString(2, employe.getPrenom());
+			instruction.setString(3, employe.getPass());
+			instruction.setString(4, employe.getDateArrivee().toString());
+			instruction.setString(5, employe.getDateDepart().toString());
+			instruction.setBoolean(6, employe.getAdmin());
+			instruction.setString(7, employe.getMail());
+			instruction.setInt(8, employe.getId());
+			instruction.executeUpdate();
+			ResultSet id = instruction.getGeneratedKeys();
+			id.next();
+			return id.getInt(1);
+		} 
+		catch (SQLException exception) 
+		{
+			exception.printStackTrace();
+			throw new SauvegardeImpossible(exception);
+		}		
+	}
 }
