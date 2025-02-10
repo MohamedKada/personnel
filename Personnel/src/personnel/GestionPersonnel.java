@@ -132,4 +132,11 @@ public class GestionPersonnel implements Serializable
 		 Employe employe = new Employe(this, nom, password, id);
 		 this.root = employe;
 	}
+	public void delete(Employe employe) throws SauvegardeImpossible{
+		 passerelle.delete(employe);
+	}
+	
+	public void delete(Ligue ligue) throws SauvegardeImpossible{
+		passerelle.delete(ligue);
+	}
 }
