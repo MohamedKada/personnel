@@ -32,21 +32,11 @@ public class JDBC implements Passerelle
 	}
 	
 	@Override
-	public GestionPersonnel getGestionPersonnel() throws SauvegardeImpossible
+	public GestionPersonnel getGestionPersonnel() 
 	{
 		GestionPersonnel gestionPersonnel = new GestionPersonnel();
 		try 
 		{
-			PreparedStatement instruction;
-			instruction = connection.prepareStatement("select id_employe , nomEmploye , passwd from employe where id_ligue is null");
-			ResultSet resultat = instruction.executeQuery();
-			
-			
-			
-			if(resultat != null && resultat.next()) {
-			gestionPersonnel.addRoot(gestionPersonnel, resultat.getString(2), resultat.getString(3), resultat.getInt(1));
-			}
-
 			String requete = "select * from ligue";
 			Statement instruction = connection.createStatement();
 			ResultSet ligues = instruction.executeQuery(requete);
@@ -166,8 +156,26 @@ public class JDBC implements Passerelle
 
 	@Override
 	public void update(Employe employe) throws SauvegardeImpossible {
-		// TODO Stub de la méthode généré automatiquement
-		
+	    try {
+	        PreparedStatement instruction;
+	        instruction = connection.prepareStatement(
+	            "UPDATE employe SET NOM_EMP = ?, PRENOM_EMP = ?, MDP_EMP = ?, DATE_ARRIVE = ?, DATE_DEPART = ?, ADMIN = ?, MAIL_EMP = ? WHERE ID_EMP = ?"
+	        );
+
+	        instruction.setString(1, employe.getNom());
+	        instruction.setString(2, employe.getPrenom());
+	        instruction.setString(3, employe.getPass());
+	        instruction.setString(4, employe.getDateArrivee().toString());
+	        instruction.setString(5, employe.getDateDepart().toString());
+	        instruction.setBoolean(6, employe.getAdmin());
+	        instruction.setString(7, employe.getMail());
+	        instruction.setInt(8, employe.getId());
+
+	        instruction.executeUpdate();
+	    } catch (SQLException exception) {
+	        exception.printStackTrace();
+	        throw new SauvegardeImpossible(exception);
+	    }
 	}
 
 	@Override
