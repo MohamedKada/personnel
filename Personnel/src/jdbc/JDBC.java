@@ -88,24 +88,19 @@ public class JDBC implements Passerelle
 		}		
 	}
 	
-	public int update(Ligue ligue) throws SauvegardeImpossible 
-	{
-		try 
-		{
-			PreparedStatement instruction;
-			instruction = connection.prepareStatement("update into ligue (nom) values(?)", Statement.RETURN_GENERATED_KEYS);
-			instruction.setString(1, ligue.getNom());		
-			instruction.executeUpdate();
-			ResultSet id = instruction.getGeneratedKeys();
-			id.next();
-			return id.getInt(1);
-		} 
-		catch (SQLException exception) 
-		{
-			exception.printStackTrace();
-			throw new SauvegardeImpossible(exception);
-		}		
+	public void update(Ligue ligue) throws SauvegardeImpossible {
+	    try {
+	        PreparedStatement instruction;
+	        instruction = connection.prepareStatement("UPDATE ligue SET nom = ? WHERE id = ?");
+	        instruction.setString(1, ligue.getNom());
+	        instruction.setInt(2, ligue.getId()); 
+	        instruction.executeUpdate();
+	    } catch (SQLException exception) {
+	        exception.printStackTrace();
+	        throw new SauvegardeImpossible(exception);
+	    }
 	}
+
 
 	@Override
 	public int insert(Employe employe) throws SauvegardeImpossible 
@@ -132,5 +127,23 @@ public class JDBC implements Passerelle
 			exception.printStackTrace();
 			throw new SauvegardeImpossible(exception);
 		}		
+	}
+
+	@Override
+	public void update(Employe employe) throws SauvegardeImpossible {
+		// TODO Stub de la méthode généré automatiquement
+		
+	}
+
+	@Override
+	public void delete(Ligue ligue) throws SauvegardeImpossible {
+		// TODO Stub de la méthode généré automatiquement
+		
+	}
+
+	@Override
+	public void delete(Employe employe) throws SauvegardeImpossible {
+		// TODO Stub de la méthode généré automatiquement
+		
 	}
 }
